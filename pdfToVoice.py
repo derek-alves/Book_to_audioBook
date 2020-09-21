@@ -1,27 +1,36 @@
 import PyPDF2
+from gtts import gTTS
+from translate import Translator
 
 bookName = 'threejs.pdf'
 
 
-class main(namebook):
-    book = open(namebook, 'rb')
-    pdfReader = PyPDF2.PdfFileReader(book)
-    
-    def getAllPages():
-      pages = pdfReader.numPages
+class main:
+
+    def __init__(self,namebook):
+        self.book = namebook
+        self.instaciate = open(self.book, 'rb')
+        self.pdfReader = PyPDF2.PdfFileReader(self.instaciate)
+      
+    def getAllPages(self):
+      pages = self.pdfReader.numPages
       return pages
     
-    def getContentPage(numberPage):
-      page = pdfReader.getPage(numberPage)
+    def getContentPage(self,numberPage):
+      page = self.pdfReader.getPage(numberPage)
       return page
 
-    def textOfPage(page):
+    def textOfPage(self,page):
       text = page.extractText()
       return text
 
 
-# pages = pdfReader.numPages
-# page = pdfReader.getPage(7)
-# text = page.extractText()
+book = main(bookName)
+page = book.getContentPage(7)
+result = book.textOfPage(page)
+info = (result[:250] + '..') if len(result) > 500 else result
 
-print(pdfReader)
+translator = Translator(to_lang="Portuguese")
+translation = translator.translate(info)
+
+print(translation)
